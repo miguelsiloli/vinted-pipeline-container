@@ -1,0 +1,14 @@
+version: "1"
+context:
+  active-host: "cloud.getdbt.com"
+  active-project: "358013"
+projects:
+  - project-name: "Analytics"
+    project-id: "358013"
+    account-name: "ST"
+    account-id: "251485"
+    account-host: "cloud.getdbt.com"
+    token-name: "cloud-cli-15a5"
+    token-value: "dbtu_Hn5R3gQjWzDZhn2qlUBfnVMkxAJDsHrZEvnECtBYLeR4Fs7WKg"
+
+

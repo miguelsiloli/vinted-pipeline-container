@@ -1,0 +1,12 @@
+vinted_pg:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: vinted.cl2cus64cwps.eu-north-1.rds.amazonaws.com
+      user: postgres
+      password: 9121759591mM!
+      port: 5432
+      dbname: postgres
+      schema: dbt_msilva
+      threads: 4

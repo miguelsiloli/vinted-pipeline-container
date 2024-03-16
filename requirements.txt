@@ -1,0 +1,12 @@
+evidently==0.4.14
+google_api_python_client==2.118.0
+lxml==4.9.3
+numpy==1.26.4
+pandas==2.2.1
+Pillow==10.2.0
+prefect==2.14.11
+prefect_great_expectations==0.2.1
+protobuf==5.26.0
+psycopg2==2.9.9
+Requests==2.31.0
+SQLAlchemy==2.0.27
