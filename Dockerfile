@@ -11,9 +11,9 @@ RUN apt-get update \
     && apt-get -y install libpq-dev gcc \
     && pip install psycopg2 \
     && pip install --no-cache-dir -r requirements.txt \
-    && prefect server start
+    && python data_orchestration/staging_workloads/main.py 
 # Make port 80 available to the world outside this container prefect port
 EXPOSE 4200
 
 # Run the Python application
-ENTRYPOINT ["python", "data_orchestration/staging_workloads/main.py"]
+ENTRYPOINT ["prefect", "server", "start"]
