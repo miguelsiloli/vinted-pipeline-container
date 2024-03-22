@@ -19,7 +19,9 @@ aws_rds_url = f"postgresql://{os.environ['user']}:{os.environ['password']}@{os.e
 engine = create_engine(aws_rds_url)
 
 # make sure to include dbt schema: dbt_msilva
-data = pd.read_sql("SELECT * from dbt_msilva.tracking_fact ORDER BY date DESC LIMIT 1000", engine)
+# data = pd.read_sql("SELECT * from dbt_msilva.tracking_fact ORDER BY date DESC LIMIT 1000", engine)
+data = pd.read_sql("SELECT * from tracking_staging ORDER BY date DESC LIMIT 1000", engine)
+print(data[["date"]])
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
