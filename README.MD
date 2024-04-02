@@ -13,11 +13,9 @@ Streamlit: [Dashboard](http://16.171.182.134:8502/) [Repo](https://github.com/lm
 #### Staging Area
 
 ![Local Image](assets/staging.png)
-Staging
 
 #### Semi-Normalized Layer (Star Schema powered by DBT)
 ![Local Image](assets/starschema.png)
-Star Schema
 
 ### Pipeline design
 
