@@ -3,7 +3,8 @@
 # Project Overview
 
 Looker Studio: [Daily Snapshot Report](https://lookerstudio.google.com/s/rPPHeQ0OlOk) of the Vinted Pipeline status.
-Streamlit: [Dashboard](http://16.171.182.134:8502/)
+
+Streamlit: [Dashboard](http://16.171.182.134:8502/) [Repo](https://github.com/lmao420blazeit/vinted-streamlit-container) 
 
 ![Local Image](assets/project_schema.png)
 
