@@ -2,7 +2,8 @@
 
 # Project Overview
 
-[Daily Snapshot Report](https://lookerstudio.google.com/s/rPPHeQ0OlOk) of the Vinted Pipeline status.
+Looker Studio: [Daily Snapshot Report](https://lookerstudio.google.com/s/rPPHeQ0OlOk) of the Vinted Pipeline status.
+Streamlit: 
 
 ![Local Image](assets/project_schema.png)
 
@@ -13,7 +14,7 @@
 ![Local Image](assets/staging.png)
 Staging
 
-#### Semi-Normalized Layer (Star Schema)
+#### Semi-Normalized Layer (Star Schema powered by DBT)
 ![Local Image](assets/starschema.png)
 Star Schema
 
