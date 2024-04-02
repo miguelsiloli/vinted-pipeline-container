@@ -1,17 +1,8 @@
 <h3 style="text-align: center;">Vinted Analytics Pipeline</h3>
 
-
 # Project Overview
 
-## Intro
-
-According to a report by ThredUp, a leading online resale platform, the resale market is projected to reach $64 billion by 2024, highlighting the growing appeal of pre-owned fashion among consumers. (ThredUp's 2021 Resale Report)
-
-Main market drivers are:
-- Changing consumer patterns
-- Economic opportunities and affordability
-- Circular economy and environmental concerns
-- Online platforms such as Vinted, Depop, Poshmar and ThredUp
+[Daily Snapshot Report](https://lookerstudio.google.com/s/rPPHeQ0OlOk) of the Vinted Pipeline status.
 
 ![Local Image](assets/project_schema.png)
 
