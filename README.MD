@@ -22,7 +22,7 @@ Main market drivers are:
 ![Local Image](assets/staging.png)
 Staging
 
-#### Semi-Normalized Layer
+#### Semi-Normalized Layer (Star Schema)
 ![Local Image](assets/starschema.png)
 Star Schema
 
