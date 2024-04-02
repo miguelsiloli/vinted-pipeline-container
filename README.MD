@@ -66,8 +66,6 @@ Star Schema
 
 ### Looker Studio
 
-[Daily Snapshot Report](https://lookerstudio.google.com/s/rPPHeQ0OlOk) of the Vinted Pipeline status.
-
 ![Local Image](assets/looker_studio.png)
 
 
