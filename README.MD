@@ -15,6 +15,29 @@ Main market drivers are:
 
 ![Local Image](assets/project_schema.png)
 
+## DB Design
+
+#### Staging Area
+
+![Local Image](assets/staging.png)
+Staging
+
+#### Semi-Normalized Layer
+![Local Image](assets/starschema.png)
+Star Schema
+
+### Pipeline design
+
+- **Atomicity**: a function should only do one task
+- **Idempotency**: 
+    - running the same code multiple times with the same input should return the same output
+    - the output should not be duplicated
+- **Data encapsulation**: function encapsulation should be limited to the scope it refers to, no additional external data.
+- **Functional composition**: a higher order mechanism which allows to increase the level of abstraction and atomicity. Can be implemented in prefect via subflow calls.
+    - factoring/atomicity
+    - code reuse
+    - + abstraction layers (f(g(x)))
+
 ##### Limitations
 
 - Vinted only provides the 
