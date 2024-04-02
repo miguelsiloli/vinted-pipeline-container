@@ -40,7 +40,6 @@ Star Schema
 
 ##### Limitations
 
-- Vinted only provides the 
 - Vinted API endpoints doesn't provide a direct way to get the brands, sizes, colours, gender, and status variables
 - Vinted API requests are rate limited
 
@@ -64,10 +63,6 @@ Star Schema
 - [x] Create dim tables for brands, sizes and colours
 - [x] Normalize the database
 - [x] Find a way to overcome API rate limits (currently implemented Exponential Backoff on requests)
-
-## Dashboard
-
-Currently just a few descriptive simple graphs. No callback functions.
 
 ### Looker Studio
 
