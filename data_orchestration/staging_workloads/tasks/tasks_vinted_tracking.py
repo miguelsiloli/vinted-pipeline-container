@@ -1,6 +1,6 @@
 from prefect import task, flow
 import pandas as pd
-from tasks.pyVinted.vinted import Vinted
+from staging_workloads.tasks.pyVinted.vinted import Vinted
 from sqlalchemy import create_engine
 from .utils import insert_on_conflict_nothing_tracking, insert_on_conflict_nothing_users_staging
 import time

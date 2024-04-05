@@ -1,7 +1,7 @@
 from prefect import flow
 from sqlalchemy import create_engine
-from tasks.tasks_vinted_catalog import *
-from tasks.pyVinted.vinted import Vinted
+from staging_workloads.tasks.tasks_vinted_catalog import *
+from staging_workloads.tasks.pyVinted.vinted import Vinted
 import time
 
 @flow(name= "Fetch from vinted", 

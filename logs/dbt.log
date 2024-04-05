@@ -130,3 +130,17 @@ Happy modeling!
 [0m00:03:37.138922 [debug] [MainThread]: Command `dbt init` succeeded at 00:03:37.138922 after 170.34 seconds
 [0m00:03:37.139891 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000250A1772E00>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000250A4341B70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000250A43A5B70>]}
 [0m00:03:37.139891 [debug] [MainThread]: Flushing usage events
+[0m14:52:08.653595 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000194F8C4E650>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000194FB7E5360>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000194FB7E5150>]}
+
+
+============================== 14:52:08.657596 | 80a25487-be7e-4f27-b641-0872dcee68a8 ==============================
+[0m14:52:08.657596 [info ] [MainThread]: Running with dbt=1.7.10
+[0m14:52:08.658596 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': 'C:\\Users\\Miguel\\Desktop\\dataengineeringpr\\vinted-orchestration\\data_orchestration', 'version_check': 'True', 'warn_error': 'None', 'log_path': 'logs', 'fail_fast': 'False', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt deps --project-dir C:\\Users\\Miguel\\Desktop\\dataengineeringpr\\vinted-orchestration\\data_orchestration --profiles-dir C:\\Users\\Miguel\\Desktop\\dataengineeringpr\\vinted-orchestration\\data_orchestration -t dev', 'introspect': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m14:52:08.659596 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path C:\Users\Miguel\Desktop\dataengineeringpr\vinted-orchestration\data_orchestration\dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m14:52:08.660595 [debug] [MainThread]: Command `dbt deps` failed at 14:52:08.660595 after 0.03 seconds
+[0m14:52:08.661596 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000194F8C4E650>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000194FB7E5390>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000194FB7E53F0>]}
+[0m14:52:08.661596 [debug] [MainThread]: Flushing usage events

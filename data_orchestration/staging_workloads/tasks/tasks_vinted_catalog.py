@@ -1,4 +1,4 @@
-from tasks.pyVinted.vinted import Vinted
+from staging_workloads.tasks.pyVinted.vinted import Vinted
 import pandas as pd
 from typing import List
 import datetime

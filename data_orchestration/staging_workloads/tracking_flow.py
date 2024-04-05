@@ -1,4 +1,4 @@
-from tasks.tasks_vinted_tracking import *
+from staging_workloads.tasks.tasks_vinted_tracking import *
 from prefect import flow
 from sqlalchemy import create_engine
 

@@ -1,8 +1,32 @@
-from catalog_flow import *
-from tracking_flow import *
+from staging_workloads.catalog_flow import *
+from staging_workloads.tracking_flow import *
 from prefect import serve
-from utils import load_credentials
+from staging_workloads.utils import load_credentials
 import os
+from pathlib import Path
+from prefect import serve, flow
+from prefect_dbt_flow import dbt_flow
+from prefect_dbt_flow.dbt import DbtDagOptions, DbtProfile, DbtProject
+
+my_dbt_flow = dbt_flow(
+    project=DbtProject(
+        name="vinted_pipeline",
+        project_dir=str(Path(__file__).parent) + "\dbt_transforms",
+        profiles_dir=str(Path(__file__).parent) + "\dbt_transforms",
+    ),
+    profile=DbtProfile(
+        target="dev",
+    ),
+    dag_options=DbtDagOptions(
+        run_test_after_model=True,
+    ),
+)
+
+@flow(name= "Trigger dbt transforms", 
+      log_prints= True)
+def dbt_transforms_flow():
+    my_dbt_flow()
+
 
 if __name__ == "__main__":
     load_credentials()
@@ -28,6 +52,10 @@ if __name__ == "__main__":
                         "interval": 200, # interval between chunks
                         "chunk_size": 10,
                         "sample_size": 60})
+
+    dbt_fact = dbt_transforms_flow.to_deployment(name="fact-tables",
+            tags=["tracking", "dbt", "fact"],
+            interval=60*60)
     
-    serve(vinted_main, vinted_tracking,
+    serve(vinted_main, vinted_tracking, dbt_fact,
           pause_on_shutdown=False)
