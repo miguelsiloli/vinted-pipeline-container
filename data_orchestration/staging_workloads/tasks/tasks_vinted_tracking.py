@@ -1,12 +1,12 @@
 from prefect import task, flow
 import pandas as pd
-from staging_workloads.tasks.pyVinted.vinted import Vinted
-from sqlalchemy import create_engine
-from .utils import insert_on_conflict_nothing_tracking, insert_on_conflict_nothing_users_staging
+from .pyVinted.vinted import Vinted
+from .utils import insert_on_conflict_nothing_tracking, insert_on_conflict_nothing_users_staging, insert_on_conflict_nothing
 import time
 from datetime import datetime
 from prefect.tasks import exponential_backoff
-from prefect_great_expectations import run_checkpoint_validation
+import json
+#from prefect_great_expectations import run_checkpoint_validation
 
 @task(name="Polling 'user_ids' from samples table.")
 def load_data_from_postgres(engine, sample_size) -> pd.DataFrame:
@@ -23,7 +23,7 @@ def load_data_from_postgres(engine, sample_size) -> pd.DataFrame:
       retry_delay_seconds=exponential_backoff(backoff_factor=7),
       retry_jitter_factor=2,
       log_prints= True)
-def fetch_sample_data(data) -> pd.DataFrame:
+def fetch_sample_data(data) -> list[pd.DataFrame]:
     """
     requests.exceptions.HTTPError 429: https://www.rfc-editor.org/rfc/rfc6585#page-3
     """
@@ -60,6 +60,9 @@ def transform_items(df: pd.DataFrame, **kwargs) -> None:
             "description", "package_size_id", "service_fee", "city", "country", "color1", 
             "status", "item_closing_action", "user_id"]
     
+    # add size_id, disposal_conditions, package_size_id, active_bid_count
+    
+    # [res["items"][i]["user"] for i in range(len(res["items"]))]
     df = df[cols]
 
     df = df.rename(columns={'id': 'product_id', 
@@ -70,7 +73,28 @@ def transform_items(df: pd.DataFrame, **kwargs) -> None:
     df["original_price_numeric"] = df["original_price_numeric"].astype(float)
     df["price_numeric"] = df["price_numeric"].astype(float)
     df["date"] = datetime.now().strftime("%Y-%m-%d")
+    
     return df
+
+@task(name = "Select images from product_id.")
+def transform_images(df: pd.DataFrame) -> pd.DataFrame:
+    photos = df["photos"].apply(json.dumps)
+
+    thumbnails = [print(photo[0]["thumbnails"][1]["url"]) for photo in photos]
+    data = pd.DataFrame({
+        "product_id": df["id"], 
+        "image": thumbnails
+    })
+
+    """    
+    photos = df["photos"].apply(json.dumps)
+
+    data = [{"product_id": photo[0]["id"], 
+             "image": photo[0]["thumbnails"][0]["url"]} for photo in photos]
+    photos_df = pd.DataFrame(data)
+    photos_df["date"] = datetime.now().strftime("%Y-%m-%d")
+    """
+    return data
 
 @task(name="Selects users columns.")
 def transform_users(df: pd.DataFrame, **kwargs) -> None:
@@ -118,6 +142,22 @@ def export_users_to_postgres(df: pd.DataFrame, engine) -> None:
               index = False, 
               method= insert_on_conflict_nothing_users_staging,
               schema= "public")
+    
+@task(name= "Export data to 'images_staging'.",
+      description= "Export tracking data to staging table: 'images_staging'",
+      timeout_seconds = 180,
+      retries= 2)
+def export_images_to_postgres(df: pd.DataFrame, engine) -> None:
+    """
+    """
+
+    table_name = 'images_staging'  # Specify the name of the table to export data to
+    #engine = create_engine('postgresql://user:4202@localhost:5432/vinted-ai')
+    df.to_sql(table_name, 
+              engine, 
+              if_exists = "append", 
+              index = False, 
+              schema= "public")
 
 
 
@@ -132,9 +172,10 @@ def load_balancer(df: pd.DataFrame, engine, chunk_size, interval = 360) -> None:
 @flow(flow_run_name= "Chunk: {name}", 
       log_prints= True)
 def tracking_subflow(df, name, engine):
-    print(df)
-    items, users = fetch_sample_data(df)    
+    items, users = fetch_sample_data(df)  
+    #images = transform_images(items)  
     items = transform_items(items)
     users = transform_users(users)
     export_items_to_postgres(items, engine)
     export_users_to_postgres(users, engine)
+    #export_images_to_postgres(images, engine)

@@ -1,4 +1,4 @@
-from staging_workloads.tasks.pyVinted.vinted import Vinted
+from .pyVinted.vinted import Vinted
 import pandas as pd
 from typing import List
 import datetime
@@ -43,7 +43,7 @@ def catalog_subflow(item, nbrRows, batch_size, vinted, engine):
                             batch_size = batch_size,
                             item = item)
     df = transform(data = df)
-    df = parse_size_title(data = df)
+    #df = parse_size_title(data = df)
     #create_artifacts(data = df)
     export_data_to_postgres(data = df, 
                             engine = engine)     # upload first to products due to FK referencing
@@ -67,11 +67,17 @@ def transform(data: pd.DataFrame) -> pd.DataFrame:
     # Specify your transformation logic here
     data["price"] = data["price"].astype(float)
 
-    data = data.drop(["is_for_swap", "user", "photo", "is_favourite", "discount", "badge", "conversion", "service_fee", 
-            "total_item_price_rounded", "icon_badges", "is_visible", "search_tracking_params", "favourite_count",
-            "total_item_price", "content_source", "menu_options"],
-            axis = 1)
-    
+    try:
+        data = data.drop(["is_for_swap", "user", "photo", "is_favourite", "discount", "badge", "conversion", "service_fee", 
+                "total_item_price_rounded", "icon_badges", "is_visible", "search_tracking_params", "favourite_count",
+                "total_item_price", "content_source", "menu_options"],
+                axis = 1)
+    except:
+        data = data.drop(["user", "photo", "is_favourite", "discount", "badge", "conversion", "service_fee", 
+                "total_item_price_rounded", "icon_badges", "is_visible", "search_tracking_params", "favourite_count",
+                "total_item_price", "content_source", "menu_options"],
+                axis = 1)
+        
     data = data.rename(columns={'id': 'product_id'})
     data["flow_name"] = FlowRunContext.get().flow_run.dict().get('name')
     data['date'] = pd.to_datetime(data['date']).dt.strftime('%Y-%m-%d %H:%M')
@@ -114,7 +120,7 @@ def transform_metadata(data: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Transformed DataFrame with metadata information.
     """
-    # Specify your transformation logic here
+
     flow_meta = FlowRunContext.get().flow_run.dict()
     flow_meta.update({"missing_values": data.isna().sum().sum(),
                       "total_rows": len(data.index)})
