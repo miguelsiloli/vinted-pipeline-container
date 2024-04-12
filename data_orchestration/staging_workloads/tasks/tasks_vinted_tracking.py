@@ -1,7 +1,7 @@
 from prefect import task, flow
 import pandas as pd
 from .pyVinted.vinted import Vinted
-from .utils import insert_on_conflict_nothing_tracking, insert_on_conflict_nothing_users_staging, insert_on_conflict_nothing
+from .utils import insert_on_conflict_nothing_tracking, insert_on_conflict_nothing_users_staging, insert_on_conflict_images_staging
 import time
 from datetime import datetime
 from prefect.tasks import exponential_backoff
@@ -78,22 +78,14 @@ def transform_items(df: pd.DataFrame, **kwargs) -> None:
 
 @task(name = "Select images from product_id.")
 def transform_images(df: pd.DataFrame) -> pd.DataFrame:
-    photos = df["photos"].apply(json.dumps)
-
-    thumbnails = [print(photo[0]["thumbnails"][1]["url"]) for photo in photos]
+    photos = df["photos"] #.apply(json.loads)
+    photos.to_json("photos.json")
+    thumbnails = [photo[0]["thumbnails"][1]["url"] for photo in photos]
     data = pd.DataFrame({
         "product_id": df["id"], 
         "image": thumbnails
     })
 
-    """    
-    photos = df["photos"].apply(json.dumps)
-
-    data = [{"product_id": photo[0]["id"], 
-             "image": photo[0]["thumbnails"][0]["url"]} for photo in photos]
-    photos_df = pd.DataFrame(data)
-    photos_df["date"] = datetime.now().strftime("%Y-%m-%d")
-    """
     return data
 
 @task(name="Selects users columns.")
@@ -157,6 +149,7 @@ def export_images_to_postgres(df: pd.DataFrame, engine) -> None:
               engine, 
               if_exists = "append", 
               index = False, 
+              method= insert_on_conflict_images_staging,
               schema= "public")
 
 
@@ -173,9 +166,9 @@ def load_balancer(df: pd.DataFrame, engine, chunk_size, interval = 360) -> None:
       log_prints= True)
 def tracking_subflow(df, name, engine):
     items, users = fetch_sample_data(df)  
-    #images = transform_images(items)  
+    images = transform_images(items)  
     items = transform_items(items)
     users = transform_users(users)
     export_items_to_postgres(items, engine)
     export_users_to_postgres(users, engine)
-    #export_images_to_postgres(images, engine)
+    export_images_to_postgres(images, engine)
